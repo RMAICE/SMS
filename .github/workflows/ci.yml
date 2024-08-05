@@ -1,31 +1,17 @@
-# name: Node.js CI
-# on:
-#   pull_request:
-#     branches: [ master ]
-#
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#
-#     steps:
-#     - uses: actions/checkout@v4
-#     - name: Use Node.js 20
-#       uses: actions/setup-node@v4
-#       with:
-#         node-version: 20.x
-#     - run: npm ci
+name: Node.js CI
+on:
+  pull_request:
+    branches: [master]
 
-name: learn-github-actions
-run-name: ${{ github.actor }} is learning GitHub Actions
-on: [push]
 jobs:
-  check-bats-version:
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
         with:
-          node-version: "20"
-      - run: npm install -g bats
-      - run: bats -v
+          node-version: 20.x
+      - run: npm ci
       - run: npm test
