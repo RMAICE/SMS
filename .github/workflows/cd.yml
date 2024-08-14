@@ -16,7 +16,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@latest
+        uses: docker/metadata-action@v5
         with:
           images: katleta/test-web-app
 
@@ -31,6 +31,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy:
+    needs: push_to_registry
     runs-on: ubuntu-latest
     steps:
       - name: Deploy using ssh
