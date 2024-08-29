@@ -33,7 +33,6 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
             cd ~/app &&
-            docker login -p ${{secrets.DOCKER_PASSWORD}} -u ${{secrets.DOCKER_USERNAME}} &&
             docker pull katleta/test-web-app &&
             docker stop app &&
             docker rm app &&
