@@ -4,6 +4,8 @@ RUN mkdir -p /home/app/node_modules && chown -R node:node /home/app
 
 WORKDIR /home/app
 
+ENV NODE_ENV=production
+
 USER node
 
 COPY package*.json ./
