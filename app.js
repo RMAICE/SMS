@@ -2,7 +2,7 @@ import { createServer } from "http";
 
 const server = createServer((_req, res) => {
     res.writeHead(200);
-    res.end("Hello World");
+    res.end("Hello");
 });
 
 server.listen(9000, () => {

@@ -33,8 +33,8 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
             cd ~/app &&
-            docker pull katleta/test-web-app &&
-            docker stop app &&
-            docker rm app &&
-            docker run -d --name=app --restart on-failure 3 katleta/test-web-app:latest &&
-            docker prune -af;
+            docker run --rm \
+                -v /var/run/docker.sock:/var/run/docker.sock \
+                containrrr/watchtower \
+                --run-once \
+                app
