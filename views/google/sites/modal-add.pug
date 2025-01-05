@@ -1,0 +1,22 @@
+.modal-dialog.site-add
+    form.modal-content(hx-post="/sites/add" hx-trigger="submit" hx-target=".site-add.modal-dialog")
+        .modal-header
+            h5.modal-title Добавление сайта
+            button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+        .modal-body
+            .mb-3
+                label.form-label(for="site-name") Имя сайта
+                input#site-name.form-control(type="text" name="name" maxlength="50" required)
+            .mb-3
+                label.form-label(for="site-url") Адрес сайта
+                input#site-url.form-control(type="url" name="url" required)
+            div
+                label.form-label(for="site-account") Аккаунт
+                select#site-account.form-select(required name="account_id")
+                    option(disabled selected value="") Выберите аккаунт
+                    each account in accounts
+                        option(value=account.id)= account.email
+
+        .modal-footer
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Отменить
+            button.btn.btn-primary Добавить

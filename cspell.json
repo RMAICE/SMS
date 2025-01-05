@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "dictionaryDefinitions": [
+    {
+      "name": "custom-words",
+      "path": "./custom-words",
+      "addWords": true
+    }
+  ],
+  "import": ["@cspell/dict-ru_ru/cspell-ext.json"],
+  "dictionaries": ["custom-words"],
+  "ignorePaths": ["node_modules", "custom-words"],
+  "allowCompoundWords": true
+}

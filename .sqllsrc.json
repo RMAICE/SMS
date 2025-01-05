@@ -1,0 +1,7 @@
+{
+    "connections": [{
+        "name": "sqlite3-SMS",
+        "adapter": "sqlite3",
+        "filename": "./.db",
+    }]
+}

@@ -1,0 +1,10 @@
+{% macro closeModal(id='') %}
+  <script>
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('{{ id }}')) {
+      console.log(document.getElementById('modal-portal'))
+      document.getElementById('modal-portal').innerHTML = ''
+    }
+  })
+  </script>
+{% endmacro %}

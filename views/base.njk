@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang=en class="h-full">
+  {% include "./includes/head.njk" %}
+  <body class="h-full">
+    <header class="bg-gray-800">
+      {% include "./includes/navigation_bar.njk" %}
+    </header>
+    <main class="bg-gray-100 pt-10 min-h-full">
+      {% block main %}{% endblock %}
+    </main>
+    {% block modals %}<div id="modal-portal"></div>{% endblock %}
+  </body>
+</html>

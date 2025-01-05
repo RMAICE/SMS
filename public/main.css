@@ -1,0 +1,11 @@
+.modal-loader {
+    display: none;
+}
+
+#modal-portal.htmx-request .modal-dialog {
+    display: none;
+}
+
+#modal-portal.htmx-request .modal-loader {
+    display: block;
+}
