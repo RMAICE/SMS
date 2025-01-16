@@ -4,15 +4,17 @@ import bodyParser from 'koa-bodyparser'
 import Router from '@koa/router'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'url'
-import googleAccount from '#entities/google/account/index.js'
-import binomAccount from '#entities/binom/account/index.js'
-import { googleOauthCallback } from '#modules/integrations/googleOauthCallback.js'
-import site from '#entities/google/site/index.js'
-import { binomAccountAdd } from '#modules/accounts/binom/add.js'
-import { delay } from '#utils/index.js'
+import { binomAccountAdd } from '#modules/binom/modals/account-add.post.js'
 import views from '@ladjs/koa-views'
-import * as https from 'https'
-import { getAccountsPageData } from '#modules/google/accounts/getAccountsPage.js'
+import { binomAccounts } from '#modules/binom/accounts/index.js'
+import { googleAccounts } from '#modules/google/accounts/index.js'
+import { googlOauth2Callback } from '#modules/google/oauth2callback.js'
+import { profilePicture } from '#modules/google/accounts/profilePicture.js'
+import { googleSites } from '#modules/google/sites/index.js'
+import { accountAddGet } from '#modules/binom/modals/account-add.get.js'
+import { telegramCallbackHandler } from '#modules/auth/telegramCallback.js'
+import { authenticate } from '#acl/auth.js'
+import { getAuth } from '#modules/auth/index.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -20,6 +22,16 @@ const __dirname = dirname(__filename)
 const app = new Koa()
 const router = new Router()
 
+/**
+ * @this {Koa.Context}
+ * @param {string} endpoint
+ */
+function hxRedirect(endpoint) {
+  this.append('HX-Redirect', endpoint)
+  this.status = 303
+}
+
+app.context.hxRedirect = hxRedirect
 app.use(bodyParser())
 
 const render = views(__dirname + '/views', {
@@ -37,86 +49,32 @@ const render = views(__dirname + '/views', {
 })
 
 app.use(render)
+app.use((ctx, next) => {
+  ctx.state.isLoggedIn = Boolean(ctx.cookies.get('token'))
+  return next()
+})
 
-router.get('/', async (ctx) => {
+router.get('/', authenticate, async (ctx) => {
   ctx.redirect('/google/accounts')
 })
 
-router.get('/google/accounts', async (ctx) => {
-  const data = await getAccountsPageData()
+router.get('/auth', getAuth)
+router.get('/auth/telegram-callback', telegramCallbackHandler)
 
-  let callbackError
-  if (ctx.cookies.get('callbackError')) {
-    callbackError = { callbackError: ctx.cookies.get('callbackError'), message: ctx.cookies.get('errorMessage') }
-    ctx.cookies.set('callbackError')
-  }
+router.get('/google/accounts', authenticate, googleAccounts)
+router.get('/google/oauth2callback', authenticate, googlOauth2Callback)
+router.get('/google/accounts/:google_account_id/pfp', authenticate, profilePicture)
+router.get('/google/sites', authenticate, googleSites)
 
-  await ctx.render('google/accounts/index', { ...data, ...callbackError })
-})
-
-router.get('/oauth2callback', async (ctx) => {
-  const oauthCallbackContext = await googleOauthCallback(ctx.url)
-
-  if (oauthCallbackContext?.callbackError) {
-    ctx.cookies.set('callbackError', oauthCallbackContext.callbackError)
-    ctx.cookies.set('errorMessage', oauthCallbackContext.message)
-  }
-
-  return ctx.redirect('google/accounts')
-})
-
-/**
- * @param {string} url
- * @returns {Promise<import('node:http').IncomingMessage>}
- */
-function get(url) {
-  return new Promise((resolve, rej) => {
-    https.get(url, function (res) {
-      if (res.statusCode !== 200)
-        rej()
-
-      resolve(res)
-    })
-  })
-}
-
-router.get('/google/accounts/:google_account_id/pfp', async (ctx) => {
-  const acc = await googleAccount.getById(ctx.params.google_account_id)
-
-  if (!acc.photo) {
-    ctx.body = Buffer.from([])
-    return
-  }
-
-  ctx.body = await get(acc.photo)
-})
-
-router.get('/binom/accounts', async (ctx) => {
-  const binomAccounts = await binomAccount.getAll()
-  const data = {
-    binomAccounts,
-  }
-
-  await ctx.render(ctx.URL.pathname.substring(1), data)
-})
-
-router.get('/google/sites', async (ctx) => {
-  /** @type {T.GoogleSite[]} */
-  const sites = await site.getAll()
-
-  await ctx.render(ctx.URL.pathname.substring(1), { sites })
-})
-
-router.get('/binom/modals/account-add', async (ctx) => {
-  await delay(1000)
-  await ctx.render(ctx.URL.pathname.substring(1))
-})
-
-router.post('/binom/accounts', binomAccountAdd)
+router.get('/binom/accounts', authenticate, binomAccounts)
+router.get('/binom/modals/account-add', authenticate, accountAddGet)
+router.post('/binom/modals/account-add', authenticate, binomAccountAdd)
 
 app.use(serve(__dirname + '/public/', { maxage: 1000 * 60 * 5, gzip: true }))
-app.use(router.routes()).use(router.allowedMethods())
+app
+  .use(router.routes())
+  .use(router.allowedMethods())
 
-app.listen(9000, () => {
-  console.log('Server is running on port 9000')
+app.listen(80, () => {
+  console.log('Server is running on port 80')
 })

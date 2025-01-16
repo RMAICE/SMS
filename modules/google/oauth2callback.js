@@ -5,6 +5,20 @@ import transaction from '../../entities/transaction.js'
 import googleApi from '../../libs/google.js'
 
 /**
+ * @param {GetCtx} ctx
+ */
+export async function googlOauth2Callback(ctx) {
+  const oauthCallbackContext = await googleOauthCallback(ctx.url)
+
+  if (oauthCallbackContext?.callbackError) {
+    ctx.cookies.set('callbackError', oauthCallbackContext.callbackError)
+    ctx.cookies.set('errorMessage', oauthCallbackContext.message)
+  }
+
+  return ctx.redirect('google/accounts')
+}
+
+/**
  * @param {string} url
  */
 export async function googleOauthCallback(url) {

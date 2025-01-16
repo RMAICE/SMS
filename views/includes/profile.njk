@@ -1,0 +1,10 @@
+<div class="flex justify-end">
+  {% if not isLoggedIn %}
+    <script async
+            src="https://telegram.org/js/telegram-widget.js?22"
+            data-telegram-login="ManageYourSiteBot"
+            data-size="medium"
+            data-userpic="false"
+            data-auth-url="http://127.0.0.1:80/auth/telegram-callback"></script>
+  {% endif %}
+</div>

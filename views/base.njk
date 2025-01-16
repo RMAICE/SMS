@@ -3,7 +3,11 @@
   {% include "./includes/head.njk" %}
   <body class="h-full">
     <header class="bg-gray-800">
-      {% include "./includes/navigation_bar.njk" %}
+      <div class="grid grid-cols-3 gap items-center max-w-7xl mx-auto px-8 xl:px-0">
+        <img class="size-20" src="/logo.svg" />
+        {% include "./includes/navigation_bar.njk" %}
+        {% include "./includes/profile.njk" %}
+      </div>
     </header>
     <main class="bg-gray-100 pt-10 min-h-full">
       {% block main %}{% endblock %}

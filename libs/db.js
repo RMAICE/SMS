@@ -47,9 +47,9 @@ create table if not exists google_site_report (
 create table if not exists binom_account (
   binom_account_id integer primary key not null,
   token text unique not null,
-  name text unique not null,
-  host text unique not null,
-  protocol text unique not null
+  name text not null,
+  host text not null,
+  protocol text not null
 );
 
 create table if not exists binom_campaign (
@@ -73,7 +73,17 @@ create table if not exists binom_campaign_report (
 
 create table if not exists site (
   site_id integer primary key,
-  url text not null unique
+  url text not null unique,
+  foreign key (user_id) references user (user_id)
+);
+
+create table if not exists user (
+  user_id integer primary key,
+  first_name text,
+  last_name text,
+  username text,
+  telegram_id text unique,
+  photo_url text
 );
 `
 

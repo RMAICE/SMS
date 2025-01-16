@@ -1,7 +1,7 @@
-import binomAccount from '../../../entities/binom/account/index.js'
+import binomAccount from '#entities/binom/account/index.js'
 
 /**
- * @param {Ctx<T.BinomAccountAddDto>} ctx
+ * @param {PostCtx<T.BinomAccountAddDto>} ctx
  */
 export async function binomAccountAdd(ctx) {
   const body = ctx.request.body
@@ -12,7 +12,7 @@ export async function binomAccountAdd(ctx) {
 
   try {
     if (!URL.canParse(body.url))
-      return ctx.render('binom/modals/account/add', { hasError: true })
+      return ctx.render('binom/modals/account-add', { hasError: true })
 
     const url = new URL(body.url)
     await binomAccount.insertOne({
@@ -21,7 +21,8 @@ export async function binomAccountAdd(ctx) {
       host: url.host,
       protocol: url.protocol,
     })
-    await ctx.render('binom/modals/account-add')
+
+    return ctx.hxRedirect('/binom/accounts')
   }
   catch (err) {
     console.error(err)

@@ -18,7 +18,8 @@
     "#libs/*": "./libs/*",
     "#modules/*": "./modules/*",
     "#entities/*": "./entities/*",
-    "#utils/*": "./utils/*"
+    "#utils/*": "./utils/*",
+    "#acl/*": "./acl/*"
   },
   "devDependencies": {
     "@eslint/js": "9.9.1",
@@ -26,6 +27,7 @@
     "@tsconfig/node20": "20.1.4",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "29.5.12",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/koa__router": "12.0.4",
     "@types/koa-bodyparser": "^4.3.12",
     "@types/koa-static": "4.0.4",
@@ -40,6 +42,7 @@
     "@ladjs/koa-views": "^9.0.0",
     "dotenv": "16.4.5",
     "googleapis": "143.0.0",
+    "jsonwebtoken": "^9.0.2",
     "koa": "2.15.3",
     "koa-bodyparser": "^4.4.1",
     "koa-static": "5.0.0",
