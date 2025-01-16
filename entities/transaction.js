@@ -1,16 +1,10 @@
-import sqlite from 'sqlite3'
-import path from 'path'
-
-if (!process.env.DB_CONNECTION)
-  throw new Error('No connection provided')
-
-const connectionStr = path.resolve(process.env.DB_CONNECTION)
+import { getNewDbConnection } from '#libs/db.js'
 
 /** @type {T.Transaction} */
 class Transaction {
   constructor() {
     this.isStarted = false
-    this.connection = new sqlite.Database(connectionStr)
+    this.connection = getNewDbConnection()
   }
 
   /**

@@ -4,11 +4,8 @@ import sqlite from 'sqlite3'
 import path from 'path'
 import { SQL } from 'sql-template-strings'
 
-if (!process.env.DB_CONNECTION)
-  throw new Error('No connection provided')
-
 const sqlite3 = sqlite.verbose()
-const db = new sqlite3.Database(path.resolve(process.env.DB_CONNECTION))
+const db = getNewDbConnection()
 
 const init = SQL`
 create table if not exists google_account (
@@ -138,3 +135,10 @@ class Db {
 }
 
 export default new Db()
+
+export function getNewDbConnection() {
+  if (!process.env.DB_CONNECTION)
+    throw new Error('No connection provided')
+
+  return new sqlite3.Database(path.resolve(process.env.DB_CONNECTION))
+}

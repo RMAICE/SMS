@@ -10,11 +10,7 @@ const scopes = [
 
 class googleApi {
   getAuthorizeUrl() {
-    const oauth2Client = new google.auth.OAuth2(
-      process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
-      process.env.GOOGLE_REDIRECT_URI,
-    )
+    const oauth2Client = this.generateOAuth2Client()
     const authorizeUrl = oauth2Client.generateAuthUrl({
       access_type: 'offline',
       prompt: 'consent',
@@ -33,11 +29,7 @@ class googleApi {
 
     if (!code) throw new Error('code не найден')
 
-    const oauth2Client = new google.auth.OAuth2(
-      process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
-      process.env.GOOGLE_REDIRECT_URI,
-    )
+    const oauth2Client = this.generateOAuth2Client()
     const { tokens } = await oauth2Client.getToken(code)
     oauth2Client.setCredentials(tokens)
 
@@ -62,11 +54,7 @@ class googleApi {
    * @param {T.GoogleAccount} account
    */
   getOauth2Client(account) {
-    const oauth2Client = new google.auth.OAuth2(
-      process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
-      process.env.GOOGLE_REDIRECT_URI,
-    )
+    const oauth2Client = this.generateOAuth2Client()
 
     oauth2Client.setCredentials({
       refresh_token: account.refresh_token,
@@ -74,6 +62,17 @@ class googleApi {
     })
 
     return oauth2Client
+  }
+
+  /**
+   * @private
+   */
+  generateOAuth2Client() {
+    return new google.auth.OAuth2(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+      process.env.GOOGLE_REDIRECT_URI,
+    )
   }
 }
 
