@@ -42,13 +42,13 @@ jobs:
           script: |
             cd ~/app &&
             docker run --rm \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            containrrr/watchtower \
-            --run-once \
             -e GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID \
             -e GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET \
             -e GOOGLE_REDIRECT_URI=$GOOGLE_REDIRECT_URI \
             -e DB_CONNECTION=$DB_CONNECTION \
             -e TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN \
             -e JWT_SECRET=$JWT_SECRET \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            containrrr/watchtower \
+            --run-once \
             app
