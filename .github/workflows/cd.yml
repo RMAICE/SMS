@@ -51,5 +51,6 @@ jobs:
             -v /var/run/docker.sock:/var/run/docker.sock \
             containrrr/watchtower \
             --run-once \
-            --include-stopped \
+            -s \
+            --revive-stopped \
             app
