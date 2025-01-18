@@ -1,9 +1,7 @@
 services:
   app:
     platform: linux/amd64
-    image: webapp
-    build:
-      context: .
+    image: katleta/test-web-app:latest
     volumes:
       - sqlite_data:/home/app/databases/
     ports:
