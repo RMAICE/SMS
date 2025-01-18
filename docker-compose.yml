@@ -6,7 +6,7 @@ services:
     volumes:
       - sqlite_data:/home/app/databases/
     ports:
-      - 80:9000
+      - 9000:9000
     env_file:
       - .env
 
