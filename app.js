@@ -75,6 +75,7 @@ app
   .use(router.routes())
   .use(router.allowedMethods())
 
-app.listen(9000, () => {
-  console.log('Server is running on port 80')
+const port = process.env.APP_PORT || 9000
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`)
 })
