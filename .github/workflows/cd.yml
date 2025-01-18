@@ -47,33 +47,3 @@ jobs:
           remote_private_key: ${{ secrets.PRIVATE_KEY }}
           stack_file: "docker-compose.yml"
           stack_name: "demo"
-
-      # - name: Deploy with docker stack
-      #   uses: appleboy/ssh-action@v1.0.3
-      #   env:
-      #     GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          GOOGLE_REDIRECT_URI: ${{ vars.GOOGLE_REDIRECT_URI }}
-          DB_CONNECTION: ${{ vars.DB_CONNECTION }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.DEMO_TELEGRAM_BOT_TOKEN }}
-          JWT_SECRET: ${{ secrets.DEMO_JWT_SECRET }}
-      #   with:
-      #     host: ${{ secrets.HOST }}
-      #     username: ${{ secrets.USERNAME }}
-      #     key: ${{ secrets.PRIVATE_KEY }}
-      #     envs: GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,GOOGLE_REDIRECT_URI,DB_CONNECTION,TELEGRAM_BOT_TOKEN,JWT_SECRET
-      #     script: |
-      #       cd ~/app &&
-      #       docker run --rm \
-      #       -e GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID \
-      #       -e GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET \
-      #       -e GOOGLE_REDIRECT_URI=$GOOGLE_REDIRECT_URI \
-      #       -e DB_CONNECTION=$DB_CONNECTION \
-      #       -e TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN \
-      #       -e JWT_SECRET=$JWT_SECRET \
-      #       -v /var/run/docker.sock:/var/run/docker.sock \
-      #       containrrr/watchtower \
-      #       --run-once \
-      #       -s \
-      #       --revive-stopped \
-      #       app
