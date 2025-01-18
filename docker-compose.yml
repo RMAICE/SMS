@@ -1,0 +1,16 @@
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - .:/home/app
+      - /home/app/node_modules
+      - sqlite_data:/home/app/base.db
+    ports:
+      - 80:9000
+    command: npm start
+    env_file:
+      - .env
+
+volumes:
+  sqlite_data:

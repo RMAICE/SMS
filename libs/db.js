@@ -68,12 +68,6 @@ create table if not exists binom_campaign_report (
   foreign key (site_id) references site (site_id)
 );
 
-create table if not exists site (
-  site_id integer primary key,
-  url text not null unique,
-  foreign key (user_id) references user (user_id)
-);
-
 create table if not exists user (
   user_id integer primary key,
   first_name text,
@@ -81,6 +75,14 @@ create table if not exists user (
   username text,
   telegram_id text unique,
   photo_url text
+);
+
+create table if not exists site (
+  site_id integer not null,
+  user_id integer,
+  url text not null unique,
+  primary key (site_id, user_id),
+  foreign key (user_id) references user (user_id)
 );
 `
 
@@ -140,5 +142,6 @@ export function getNewDbConnection() {
   if (!process.env.DB_CONNECTION)
     throw new Error('No connection provided')
 
-  return new sqlite3.Database(path.resolve(process.env.DB_CONNECTION))
+  console.log(process.cwd() + path.resolve(process.env.DB_CONNECTION))
+  return new sqlite3.Database(process.cwd() + path.resolve(process.env.DB_CONNECTION))
 }

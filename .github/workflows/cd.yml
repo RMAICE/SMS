@@ -25,7 +25,19 @@ jobs:
     needs: push_to_registry
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy using ssh
+      - name: Checkout codebase
+        uses: actions/checkout@v2
+
+      - name: Deploy
+        uses: kitconcept/docker-stack-deploy@v1.0.1
+        with:
+          remote_host: ${{ secrets.HOST }}
+          remote_user: ${{ secrets.USERNAME }}
+          remote_private_key: ${{ secrets.PRIVATE_KEY }}
+          stack_file: "stacks/plone.yml"
+          stack_name: "plone-staging"
+
+      - name: Deploy with docker stack
         uses: appleboy/ssh-action@v1.0.3
         env:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}

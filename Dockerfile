@@ -12,7 +12,7 @@ COPY package*.json ./
 
 COPY --chown=node:node . .
 
-RUN npm install
+RUN npm ci
 
 EXPOSE 9000
 

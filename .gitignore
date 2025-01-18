@@ -133,4 +133,4 @@ dist
 google-oauth-secret.json
 
 # sqlite
-db
+data.db
