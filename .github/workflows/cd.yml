@@ -37,7 +37,6 @@ jobs:
           echo 'DB_CONNECTION=${{ vars.DB_CONNECTION }}' >> .env
           echo 'TELEGRAM_BOT_TOKEN=${{ secrets.DEMO_TELEGRAM_BOT_TOKEN }}' >> .env
           echo 'JWT_SECRET=${{ secrets.DEMO_JWT_SECRET }}' >> .env
-          ls
           cat .env
 
       - name: Deploy

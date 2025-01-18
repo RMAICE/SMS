@@ -142,6 +142,5 @@ export function getNewDbConnection() {
   if (!process.env.DB_CONNECTION)
     throw new Error('No connection provided')
 
-  console.log('db connection:', path.resolve(process.env.DB_CONNECTION))
   return new sqlite3.Database(path.resolve(process.env.DB_CONNECTION))
 }
