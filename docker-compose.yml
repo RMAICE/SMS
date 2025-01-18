@@ -2,7 +2,6 @@ version: 3
 
 services:
   app:
-    platform: linux/amd64
     image: katleta/test-web-app:latest
     volumes:
       - sqlite_data:/home/app/databases/
