@@ -51,4 +51,3 @@ jobs:
           stack_file: docker-compose.yml
           stack_name: demo
           env_file: .env
-          debug: 1
