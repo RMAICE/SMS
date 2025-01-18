@@ -1,8 +1,11 @@
-node_modules
+**/node_modules/
+**/dist
+databases
 npm-debug.log
-Dockerfile
 .dockerignore
 .git
 .gitignore
 .env
-db
+.coverage
+.coverage.*
+.env
