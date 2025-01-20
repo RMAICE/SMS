@@ -1,17 +1,20 @@
 <!DOCTYPE html>
-<html lang=en class="h-full">
+<html lang="en" class="h-full">
   {% include "./includes/head.njk" %}
-  <body class="h-full">
+  <body class="min-h-full flex flex-col">
     <header class="bg-gray-800">
       <div class="grid grid-cols-3 gap items-center max-w-7xl mx-auto px-8 xl:px-0">
-        <img class="size-20" src="/logo.svg" />
+        <img class="size-20" src="/logo.svg" alt="manage your site" />
         {% include "./includes/navigation_bar.njk" %}
         {% include "./includes/profile.njk" %}
       </div>
     </header>
-    <main class="bg-gray-100 pt-10 min-h-full">
-      {% block main %}{% endblock %}
+    <main class="basis-0 grow bg-gray-100 pt-10">
+      {% block main %}
+      {% endblock main %}
     </main>
-    {% block modals %}<div id="modal-portal"></div>{% endblock %}
+    {% block modals %}
+      <div id="modal-portal"></div>
+    {% endblock modals %}
   </body>
 </html>

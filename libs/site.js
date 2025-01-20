@@ -16,13 +16,13 @@ export async function getAllMappedSites() {
  * @param {string} params.domain
  * @param {Awaited<ReturnType<typeof getAllMappedSites>>} params.sitesMap
  */
-export async function getOrCreateSiteId({ domain, sitesMap }) {
+export async function getOrCreateSiteId({ domain, sitesMap }, trx) {
   let siteId = sitesMap.get(domain)
 
   if (siteId)
     return siteId
 
-  siteId = await site.insertOne({ url: domain })
+  siteId = await site.insertOne({ url: domain }, trx)
 
   sitesMap.set(domain, siteId)
 

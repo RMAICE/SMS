@@ -42,7 +42,7 @@ export async function telegramCallbackHandler(ctx) {
   const userId = await user.insertOne(userData)
   const token = jwt.sign({ sub: userId }, process.env.JWT_SECRET, { expiresIn: '48h' })
 
-  ctx.cookies.set('token', token, { httpOnly: true, sameSite: 'strict' })
+  ctx.cookies.set('token', token, { sameSite: 'lax' })
 
   return ctx.redirect('/')
 }

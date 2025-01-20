@@ -8,7 +8,7 @@ import { binomAccountAdd } from '#modules/binom/modals/account-add.post.js'
 import views from '@ladjs/koa-views'
 import { binomAccounts } from '#modules/binom/accounts/index.js'
 import { googleAccounts } from '#modules/google/accounts/index.js'
-import { googlOauth2Callback } from '#modules/google/oauth2callback.js'
+import { googlOauth2CallbackHandler } from '#modules/google/oauth2callback.js'
 import { profilePicture } from '#modules/google/accounts/profilePicture.js'
 import { googleSites } from '#modules/google/sites/index.js'
 import { accountAddGet } from '#modules/binom/modals/account-add.get.js'
@@ -21,6 +21,8 @@ const __dirname = dirname(__filename)
 
 const app = new Koa()
 const router = new Router()
+
+console.log(process.env.NODE_ENV)
 
 /**
  * @this {Koa.Context}
@@ -40,9 +42,10 @@ const render = views(__dirname + '/views', {
     njk: 'nunjucks',
   },
   options: {
+    telegramBotName: process.env.TELEGRAM_BOT_NAME,
     nunjucks: {
       configure: {
-        noCache: true,
+        noCache: process.env.NODE_ENV !== 'production',
       },
     },
   },
@@ -62,7 +65,7 @@ router.get('/auth', getAuth)
 router.get('/auth/telegram-callback', telegramCallbackHandler)
 
 router.get('/google/accounts', authenticate, googleAccounts)
-router.get('/google/oauth2callback', authenticate, googlOauth2Callback)
+router.get('/google/oauth2callback', googlOauth2CallbackHandler)
 router.get('/google/accounts/:google_account_id/pfp', authenticate, profilePicture)
 router.get('/google/sites', authenticate, googleSites)
 

@@ -7,15 +7,13 @@ import googleApi from '../../libs/google.js'
 /**
  * @param {GetCtx} ctx
  */
-export async function googlOauth2Callback(ctx) {
+export async function googlOauth2CallbackHandler(ctx) {
   const oauthCallbackContext = await googleOauthCallback(ctx.url)
 
-  if (oauthCallbackContext?.callbackError) {
-    ctx.cookies.set('callbackError', oauthCallbackContext.callbackError)
-    ctx.cookies.set('errorMessage', oauthCallbackContext.message)
-  }
-
-  return ctx.redirect('google/accounts')
+  await ctx.render(ctx.path.substring(1), {
+    callbackError: oauthCallbackContext?.callbackError,
+    message: oauthCallbackContext?.message,
+  })
 }
 
 /**
@@ -57,7 +55,7 @@ export async function googleOauthCallback(url) {
         throw new Error('Site parsing error')
 
       const domain = new URL(siteItem.siteUrl).hostname
-      const siteId = await getOrCreateSiteId({ sitesMap, domain })
+      const siteId = await getOrCreateSiteId({ sitesMap, domain }, trx)
 
       await site.insertOne({
         permissions: siteItem.permissionLevel,

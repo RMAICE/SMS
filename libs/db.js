@@ -78,10 +78,10 @@ create table if not exists user (
 );
 
 create table if not exists site (
-  site_id integer not null,
+  site_id integer primary key,
   user_id integer,
   url text not null unique,
-  primary key (site_id, user_id),
+  unique (site_id, user_id),
   foreign key (user_id) references user (user_id)
 );
 `

@@ -22,6 +22,7 @@ declare global {
       GOOGLE_CLIENT_SECRET: string | undefined
       GOOGLE_REDIRECT_URI: string | undefined
       DB_CONNECTION: string | undefined
+      TELEGRAM_BOT_NAME: string | undefined
       TELEGRAM_BOT_TOKEN: string | undefined
       JWT_SECRET: string | undefined
       APP_HOSTNAME: string | undefined

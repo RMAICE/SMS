@@ -17,11 +17,5 @@ async function getAccountsPageData() {
 export async function googleAccounts(ctx) {
   const data = await getAccountsPageData()
 
-  let callbackError
-  if (ctx.cookies.get('callbackError')) {
-    callbackError = { callbackError: ctx.cookies.get('callbackError'), message: ctx.cookies.get('errorMessage') }
-    ctx.cookies.set('callbackError')
-  }
-
-  await ctx.render(ctx.path.substring(1), { ...data, ...callbackError })
+  await ctx.render(ctx.path.substring(1), data)
 }
