@@ -36,7 +36,9 @@ jobs:
           echo 'GOOGLE_REDIRECT_URI=${{ vars.GOOGLE_REDIRECT_URI }}' >> .env
           echo 'DB_CONNECTION=${{ vars.DB_CONNECTION }}' >> .env
           echo 'TELEGRAM_BOT_TOKEN=${{ secrets.DEMO_TELEGRAM_BOT_TOKEN }}' >> .env
+          echo 'TELEGRAM_BOT_NAME=${{ secrets.DEMO_TELEGRAM_BOT_NAME }}' >> .env
           echo 'JWT_SECRET=${{ secrets.DEMO_JWT_SECRET }}' >> .env
+          echo 'NODE_ENV=${{ vars.NODE_ENV }}' >> .env
           cat .env
 
       - name: Deploy
