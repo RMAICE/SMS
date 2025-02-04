@@ -44,6 +44,7 @@ const render = views(__dirname + '/views', {
   options: {
     telegramBotName: process.env.TELEGRAM_BOT_NAME,
     nunjucks: {
+      loader: 'src/views',
       configure: {
         noCache: process.env.NODE_ENV !== 'production',
       },

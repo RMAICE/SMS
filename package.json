@@ -9,17 +9,17 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "node app.js",
-    "dev": "node --inspect --watch app.js"
+    "start": "node index.js",
+    "dev": "node --inspect --watch index.js"
   },
   "author": "",
   "license": "ISC",
   "imports": {
-    "#libs/*": "./libs/*",
-    "#modules/*": "./modules/*",
-    "#entities/*": "./entities/*",
-    "#utils/*": "./utils/*",
-    "#acl/*": "./acl/*"
+    "#libs/*": "./src/libs/*",
+    "#modules/*": "./src/modules/*",
+    "#entities/*": "./src/entities/*",
+    "#utils/*": "./src/utils/*",
+    "#acl/*": "./src/acl/*"
   },
   "devDependencies": {
     "@eslint/js": "9.9.1",
