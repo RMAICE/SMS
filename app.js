@@ -15,6 +15,7 @@ import { accountAddGet } from '#modules/binom/modals/account-add.get.js'
 import { telegramCallbackHandler } from '#modules/auth/telegramCallback.js'
 import { authenticate } from '#acl/auth.js'
 import { getAuth } from '#modules/auth/index.js'
+import { googleSiteAnalytics } from '#modules/google/sites/analytics.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -30,7 +31,6 @@ console.log(process.env.NODE_ENV)
  */
 function hxRedirect(endpoint) {
   this.append('HX-Redirect', endpoint)
-  this.status = 303
 }
 
 app.context.hxRedirect = hxRedirect
@@ -58,7 +58,7 @@ app.use((ctx, next) => {
 })
 
 router.get('/', authenticate, async (ctx) => {
-  ctx.redirect('/google/accounts')
+  await ctx.render(ctx.path.substring(1))
 })
 
 router.get('/auth', getAuth)
@@ -68,6 +68,7 @@ router.get('/google/accounts', authenticate, googleAccounts)
 router.get('/google/oauth2callback', googlOauth2CallbackHandler)
 router.get('/google/accounts/:google_account_id/pfp', authenticate, profilePicture)
 router.get('/google/sites', authenticate, googleSites)
+router.get('/google/sites/analytics', authenticate, googleSiteAnalytics)
 
 router.get('/binom/accounts', authenticate, binomAccounts)
 router.get('/binom/modals/account-add', authenticate, accountAddGet)

@@ -21,7 +21,7 @@ create table if not exists google_account (
 
 create table if not exists google_site (
   google_site_id integer primary key,
-  url text unique,
+  url text unique, -- TODO: remove (duplicate from site table)
   permissions text not null,
   google_account_id text not null,
   site_id integer not null,

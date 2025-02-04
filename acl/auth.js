@@ -19,7 +19,8 @@ export async function authenticate(ctx, next) {
     jwt.verify(token, process.env.JWT_SECRET)
   }
   catch {
-    ctx.throw(401)
+    ctx.cookies.set('token', null, { sameSite: 'lax' })
+    ctx.hxRedirect('/auth')
   }
 
   await next()

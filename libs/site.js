@@ -14,7 +14,8 @@ export async function getAllMappedSites() {
 /**
  * @param {object} params
  * @param {string} params.domain
- * @param {Awaited<ReturnType<typeof getAllMappedSites>>} params.sitesMap
+ * @param {Awaited<ReturnType<typeof getAllMappedSites>>} params.sitesMap} params
+ * @param {T.Transaction} [trx]
  */
 export async function getOrCreateSiteId({ domain, sitesMap }, trx) {
   let siteId = sitesMap.get(domain)

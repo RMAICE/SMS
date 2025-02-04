@@ -4,23 +4,16 @@ import db from '../../../libs/db.js'
 class Sites {
   /**
      * @param {T.Transaction} [t]
-     * @returns {Promise<T.GoogleSite[]>}
+     * @returns {Promise<T.GoogleAnalyticsRow[]>}
      */
-  getAll(t) {
-    return db.query(SQL`select * from google_site;`, t)
-  }
-
-  /**
-     * @param {T.GoogleAccount} account
-     * @param {T.Transaction} [t]
-     * @returns {Promise<T.GoogleSite>}
-     */
-  getAllByAccount(account, t) {
+  getAnalytics(t) {
     return db.query(SQL`
-            select *
-            from google_site
-            where account_id = ${account.google_account_id}
-        `, t)
+      select 
+        position, impressions, clicks, s.url as url, date
+      from google_site_report
+      left join site s using (site_id)
+      where date between date('now', '-7 days', '1', 'start of day', 'utc') and date('now', '+1 day', 'start of day', 'utc')
+      limit 100`, t)
   }
 
   /**
@@ -29,11 +22,11 @@ class Sites {
      */
   async insertMany(reports, t) {
     const query = SQL`
-            INSERT INTO
+            insert into
                 google_site_report (
                     google_site_id, clicks, impressions, position, date, site_id
                 )
-            VALUES
+            values
         `
 
     const values = reports.map(({

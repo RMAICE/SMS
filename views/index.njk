@@ -1,0 +1,38 @@
+{% extends "./views/base.njk" %}
+{% block main %}
+  <div class="max-w-7xl mx-auto">
+    <div class="px-8">
+      <div class="flow-root mt-8">
+        <div class="overflow-x-auto -mx-8 -my-2">
+          <div class="inline-block min-w-full py-2 align-middle px-8">
+            <table class="min-w-full divide-gray-300 divide-y"
+                   hx-get="/google/sites/analytics"
+                   hx-trigger="load">
+              <thead>
+                <tr>
+                  <th scope="col"
+                      class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 whitespace-nowrap">URL</th>
+                  <th scope="col"
+                      class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 whitespace-nowrap">POSITION</th>
+                  <th scope="col"
+                      class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 whitespace-nowrap">
+                    IMPRESSIONS
+                  </th>
+                  <th scope="col"
+                      class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 whitespace-nowrap">CLICKS</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-300">
+                <tr>
+                  <th colspan="4">
+                    <img width="100" height="100" src="/loading.gif" />
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock main %}
