@@ -1,0 +1,6 @@
+# action.yml
+name: Sqitch
+description: Do sqitchy things
+runs:
+  using: docker
+  image: Dockerfile

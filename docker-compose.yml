@@ -3,12 +3,25 @@ version: '3'
 services:
   app:
     image: katleta/test-web-app:latest
-    volumes:
-      - sqlite_data:/home/app/databases/
     ports:
       - 9000:9000
     env_file:
       - .env
 
+  db:
+    image: postgres
+    env_file: 
+      - .env
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+
+networks:
+    postgres:
+        driver: bridge
+
 volumes:
-  sqlite_data:
+  postgres:
