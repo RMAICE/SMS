@@ -1,12 +1,14 @@
-version: '3'
-
 services:
   app:
     image: katleta/test-web-app:latest
     ports:
-      - 9000:9000
+      - ${APP_PORT}:${APP_PORT}
     env_file:
       - .env
+    networks:
+      - postgres
+    depends_on:
+      - db
 
   db:
     image: postgres
@@ -19,9 +21,19 @@ services:
     networks:
       - postgres
 
+  sqitch:
+    image: sqitch/sqitch:v1.5.0.0
+    volumes:
+      - ./sqitch.conf:/repo/sqitch.conf
+      - ./migrations/:/repo/migrations
+    networks:
+      - postgres
+    depends_on:
+      - db
+
 networks:
-    postgres:
-        driver: bridge
+  postgres:
+    driver: bridge
 
 volumes:
   postgres:

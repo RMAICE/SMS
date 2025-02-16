@@ -13,6 +13,26 @@ jobs:
 
       - name: sqitch
         uses: ./.github/actions/sqitch
+
+      - name: Create env file
+        run: |
+          touch .env
+          echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}' >> .env
+          echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}' >> .env
+          echo 'GOOGLE_REDIRECT_URI=${{ vars.GOOGLE_REDIRECT_URI }}' >> .env
+          echo 'DB_CONNECTION=${{ vars.DB_CONNECTION }}' >> .env
+          echo 'TELEGRAM_BOT_TOKEN=${{ secrets.DEMO_TELEGRAM_BOT_TOKEN }}' >> .env
+          echo 'TELEGRAM_BOT_NAME=${{ secrets.DEMO_TELEGRAM_BOT_NAME }}' >> .env
+          echo 'JWT_SECRET=${{ secrets.DEMO_JWT_SECRET }}' >> .env
+          echo 'SQITCH_VOLUME==${{ secrets.SQITCH_VOLUME }}' >> .env
+          cat .env
+
+      - name: Run migration
+        uses: sagebind/docker-swarm-deploy-action@v2
+        with:
+          remote_host: ${{ secrets.HOST }}
+          ssh_private_key: ${{ secrets.PRIVATE_KEY }}
+          args: compose run --rm sqitch 
   # push_to_registry:
   #   runs-on: ubuntu-latest
   #   steps:

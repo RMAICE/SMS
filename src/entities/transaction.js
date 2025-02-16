@@ -1,77 +1,55 @@
-import { getNewDbConnection } from '#libs/db.js'
+import db from '#libs/db.js'
 
 /** @type {T.Transaction} */
 class Transaction {
   constructor() {
     this.isStarted = false
-    this.connection = getNewDbConnection()
+    this.connection = null
   }
 
   /**
    * @returns {Promise<T.Transaction>}
    */
-  begin() {
-    return new Promise((res, rej) => {
-      if (this.isStarted) {
-        res(this)
-        return
-      }
+  async begin() {
+    if (this.isStarted) {
+      return this
+    }
 
-      this.isStarted = true
-      this.connection.run('BEGIN TRANSACTION', (err) => {
-        if (err) rej(err)
-
-        res(this)
-      })
-    })
+    this.isStarted = true
+    this.connection = await db.getConnection()
+    this.connection.query('begin transaction')
+    return this
   }
 
   /**
    * @returns {Promise<T.Transaction>}
    */
-  commit() {
-    return new Promise((res, rej) => {
-      if (this.isStarted) {
-        this.connection.run('COMMIT;', (err) => {
-          if (err)
-            rej(err)
+  async commit() {
+    if (!this.connection)
+      throw new Error('No connection to commit')
 
-          this.connection.close((err) => {
-            if (err) rej(err)
+    if (this.isStarted) {
+      await this.connection.query('commit')
+      this.connection.release()
+      this.isStarted = false
+    }
 
-            res(this)
-          })
-        })
-        this.isStarted = false
-        return
-      }
-
-      res(this)
-    })
+    return this
   }
 
   /**
    * @returns {Promise<T.Transaction>}
    */
-  rollback() {
-    return new Promise((res, rej) => {
-      if (this.isStarted) {
-        this.connection.run('ROLLBACK;', (err) => {
-          if (err)
-            rej(err)
+  async rollback() {
+    if (!this.connection)
+      throw new Error('No connection to rollback')
+    if (this.isStarted) {
+      await this.connection.query('rollback')
+      this.connection.release()
+      this.isStarted = false
+    }
 
-          this.connection.close((err) => {
-            if (err) rej(err)
-
-            res(this)
-          })
-        })
-        this.isStarted = false
-        return
-      }
-
-      res(this)
-    })
+    return this
   }
 }
 

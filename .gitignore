@@ -134,3 +134,6 @@ google-oauth-secret.json
 
 # sqlite
 data.db
+
+# docker compose
+docker-compose.override.yml

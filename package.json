@@ -40,6 +40,7 @@
   "dependencies": {
     "@koa/router": "13.0.0",
     "@ladjs/koa-views": "^9.0.0",
+    "@types/pg": "^8.11.11",
     "dotenv": "16.4.5",
     "googleapis": "143.0.0",
     "jsonwebtoken": "^9.0.2",
@@ -47,6 +48,7 @@
     "koa-bodyparser": "^4.4.1",
     "koa-static": "5.0.0",
     "nunjucks": "^3.2.4",
+    "pg": "^8.13.3",
     "sql-template-strings": "2.2.2",
     "sqlite3": "^5.1.7"
   }

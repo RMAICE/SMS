@@ -1,4 +1,4 @@
 %syntax-version=1.0.0
-%project=SMS
-%uri=https://github.com/RMAICE/SMS
+%project=sms
 
+appschema 2025-02-13T21:14:50Z Roman Mikhaelian <romanmihail@MacBook-Air.local> # Initial db state

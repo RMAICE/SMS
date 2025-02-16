@@ -13,7 +13,7 @@ class Sites {
   /**
      * @param {T.GoogleAccount} account
      * @param {T.Transaction} [t]
-     * @returns {Promise<T.GoogleSite>}
+     * @returns {Promise<T.GoogleSite[]>}
      */
   getAllByAccount(account, t) {
     return db.query(SQL`
