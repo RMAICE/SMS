@@ -9,6 +9,7 @@ services:
       - postgres
     depends_on:
       - db
+      - sqitch
 
   db:
     image: postgres
@@ -23,6 +24,7 @@ services:
 
   sqitch:
     image: sqitch/sqitch:v1.5.0.0
+    command: deploy --verify
     volumes:
       - ./sqitch.conf:/repo/sqitch.conf
       - ./migrations/:/repo/migrations
