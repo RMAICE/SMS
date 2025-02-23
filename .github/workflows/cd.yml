@@ -58,4 +58,4 @@ jobs:
           env_file: .env_file
           debug: 1
         env:
-        APP_PORT: vars.APP_PORT
+          APP_PORT: vars.APP_PORT
