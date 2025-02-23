@@ -44,14 +44,8 @@ jobs:
           cat .env
 
       - name: Deploy
-        uses: kitconcept/docker-stack-deploy@v1.0.1
+        uses: sagebind/docker-swarm-deploy-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          remote_host: ${{ secrets.HOST }}
-          remote_user: ${{ secrets.USERNAME }}
+          ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
           remote_private_key: ${{ secrets.PRIVATE_KEY }}
-          stack_file: docker-compose.yml
-          stack_name: demo
-          env_file: .env
-          debug: 1
+          args: stack deploy --compose-file docker-compose.yml demo
