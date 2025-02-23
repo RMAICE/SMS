@@ -47,5 +47,13 @@ jobs:
         uses: sagebind/docker-swarm-deploy-action@v2
         with:
           ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+          ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
           remote_host: ${{ secrets.HOST }}
-          args: -e APP_PORT=${{vars.APP_PORT}} stack deploy --compose-file docker-compose.yml demo
+          remote_user: ${{ secrets.USERNAME }}
+          remote_private_key: ${{ secrets.PRIVATE_KEY }}
+          stack_file: docker-compose.yml
+          stack_name: demo
+          env_file: .env
+          debug: 1
