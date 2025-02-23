@@ -1,4 +1,4 @@
-import user from '#entities/user/index.js'
+import profile from '#entities/profile/index.js'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 
@@ -29,7 +29,7 @@ export async function telegramCallbackHandler(ctx) {
     ctx.throw(400)
   }
 
-  /** @type {Omit<T.User, 'user_id'>} */
+  /** @type {Omit<T.Profile, 'profile_id'>} */
   const userData = {
     telegram_id: ctx.query.id,
   }
@@ -39,8 +39,8 @@ export async function telegramCallbackHandler(ctx) {
   if (ctx.query.username) userData.username = ctx.query.username
   if (ctx.query.photo_url) userData.photo_url = ctx.query.photo_url
 
-  const userId = await user.insertOne(userData)
-  const token = jwt.sign({ sub: userId }, process.env.JWT_SECRET, { expiresIn: '48h' })
+  const { rows } = await profile.insertOne(userData)
+  const token = jwt.sign({ sub: rows[0].profile_id }, process.env.JWT_SECRET, { expiresIn: '48h' })
 
   ctx.cookies.set('token', token, { sameSite: 'lax' })
 

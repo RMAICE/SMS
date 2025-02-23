@@ -38,8 +38,7 @@ class Db {
    */
   async run(sql, transaction) {
     const connection = transaction?.connection ?? pool
-    const result = await connection.query(sql.text, sql.values)
-    return result.oid
+    return connection.query(sql.text, sql.values)
   }
 
   getConnection() {

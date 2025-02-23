@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import dotenv from 'dotenv/config'
 import { google } from 'googleapis'
+import jwt from 'jsonwebtoken'
 
 const scopes = [
   'https://www.googleapis.com/auth/userinfo.profile',
@@ -33,10 +34,9 @@ class googleApi {
     const { tokens } = await oauth2Client.getToken(code)
     oauth2Client.setCredentials(tokens)
 
-    const oauth2 = google.oauth2({ auth: oauth2Client, version: 'v2' })
-    const userInfo = await oauth2.userinfo.get()
+    if (!tokens.id_token) throw new Error('id_token не найден')
 
-    return { tokens, userInfo: userInfo.data }
+    return { tokens, userInfo: jwt.decode(tokens.id_token) }
   }
 
   /**

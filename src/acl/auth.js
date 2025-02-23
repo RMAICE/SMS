@@ -20,7 +20,7 @@ export async function authenticate(ctx, next) {
   }
   catch {
     ctx.cookies.set('token', null, { sameSite: 'lax' })
-    ctx.hxRedirect('/auth')
+    ctx.redirect('/auth')
   }
 
   await next()

@@ -13,12 +13,13 @@ class Sites {
   /**
    * @param {Omit<T.Site, 'site_id'>} site
    * @param {T.Transaction} [t]
-   * @returns {Promise<number>}
+   * @returns {Promise<import('pg').QueryResult<Pick<T.Site, 'site_id'>>>}
    */
   async insertOne({ url }, t) {
     const query = SQL`
             insert into site (url) values (${url})
-                on conflict do nothing
+              on conflict do nothing
+            returning site_id
         `
 
     return db.run(query, t)

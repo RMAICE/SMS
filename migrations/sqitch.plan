@@ -2,3 +2,4 @@
 %project=sms
 
 appschema 2025-02-13T21:14:50Z Roman Mikhaelian <romanmihail@MacBook-Air.local> # Initial db state
+init-state [appschema] 2025-02-17T18:55:50Z Roman Mikhaelian <romanmihail@MacBook-Air.local> # Initial db tables

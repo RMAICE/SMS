@@ -19,7 +19,7 @@ async function getSitesStats() {
  * @returns {Promise<void>}
  */
 async function fetchSitesAnalytics({ account }) {
-  const googleSites = await googleSite.getAll()
+  const googleSites = await googleSite.getAllWithSite()
   const client = google.getWebmastersByAccount(account)
 
   for (let site of googleSites) {
@@ -30,7 +30,7 @@ async function fetchSitesAnalytics({ account }) {
 
 /**
  * @param {import('googleapis').webmasters_v3.Webmasters} client
- * @param {T.GoogleSite} site
+ * @param {T.GoogleSite & T.Site} site
  */
 async function* getSiteReports(client, site) {
   let rowLimit = 2,

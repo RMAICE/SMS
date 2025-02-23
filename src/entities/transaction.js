@@ -25,15 +25,14 @@ class Transaction {
    * @returns {Promise<T.Transaction>}
    */
   async commit() {
+    if (!this.isStarted) return this
+
     if (!this.connection)
       throw new Error('No connection to commit')
 
-    if (this.isStarted) {
-      await this.connection.query('commit')
-      this.connection.release()
-      this.isStarted = false
-    }
-
+    await this.connection.query('commit')
+    this.connection.release()
+    this.isStarted = false
     return this
   }
 
@@ -41,20 +40,18 @@ class Transaction {
    * @returns {Promise<T.Transaction>}
    */
   async rollback() {
+    if (!this.isStarted) return this
+
     if (!this.connection)
       throw new Error('No connection to rollback')
-    if (this.isStarted) {
-      await this.connection.query('rollback')
-      this.connection.release()
-      this.isStarted = false
-    }
 
+    await this.connection.query('rollback')
+    this.connection.release()
+    this.isStarted = false
     return this
   }
 }
 
-export default async function transaction() {
-  const transaction = new Transaction()
-
-  return transaction
+export default function transaction() {
+  return new Transaction()
 };

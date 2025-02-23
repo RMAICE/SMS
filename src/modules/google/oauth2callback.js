@@ -1,6 +1,7 @@
-import { getAllMappedSites, getOrCreateSiteId } from '#libs/site.js'
+import { getOrCreateSiteId } from '#libs/site.js'
+import { isObject } from '#libs/util.js'
 import googleAccount from '../../entities/google/account/index.js'
-import site from '../../entities/google/site/index.js'
+import googleSite from '../../entities/google/site/index.js'
 import transaction from '../../entities/transaction.js'
 import googleApi from '../../libs/google.js'
 
@@ -20,12 +21,13 @@ export async function googlOauth2CallbackHandler(ctx) {
  * @param {string} url
  */
 export async function googleOauthCallback(url) {
-  const trx = await transaction()
+  const trx = transaction()
   const ctx = {}
 
   try {
     const { tokens, userInfo } = await googleApi.getToken(url)
-    if (!userInfo.id
+    if (!isObject(userInfo)
+      || !userInfo.sub
       || !userInfo.email
       || !tokens.access_token
       || !tokens.refresh_token
@@ -33,7 +35,7 @@ export async function googleOauthCallback(url) {
       throw new Error('No data from google')
 
     const accountData = {
-      google_account_id: userInfo.id, email: userInfo.email,
+      google_account_id: userInfo.sub, email: userInfo.email,
       photo: userInfo.picture, access_token: tokens.access_token,
       scope: tokens.scope, refresh_token: tokens.refresh_token,
       expiry_date: tokens.expiry_date ?? undefined,
@@ -41,7 +43,6 @@ export async function googleOauthCallback(url) {
     const webMasters = googleApi.getWebmastersByAccount(accountData)
 
     const { data: { siteEntry = [] } } = await webMasters.sites.list()
-    const sitesMap = await getAllMappedSites()
 
     await trx.begin()
 
@@ -55,11 +56,10 @@ export async function googleOauthCallback(url) {
         throw new Error('Site parsing error')
 
       const domain = new URL(siteItem.siteUrl).hostname
-      const siteId = await getOrCreateSiteId({ sitesMap, domain }, trx)
+      const siteId = await getOrCreateSiteId({ domain }, trx)
 
-      await site.insertOne({
+      await googleSite.insertOne({
         permissions: siteItem.permissionLevel,
-        url: siteItem.siteUrl,
         google_account_id: accountData.google_account_id,
         site_id: siteId,
       }, trx)
@@ -68,6 +68,7 @@ export async function googleOauthCallback(url) {
     await trx.commit()
   }
   catch (err) {
+    console.error(err)
     await trx.rollback()
     if (!(err instanceof Error)) {
       ctx.callbackError = 'unknown'

@@ -12,7 +12,7 @@ class Sites {
         position, impressions, clicks, s.url as url, date
       from google_site_report
       left join site s using (site_id)
-      where date between date('now', '-7 days', '1', 'start of day', 'utc') and date('now', '+1 day', 'start of day', 'utc')
+      where date between date_trunc('week', current_date) and current_date
       limit 100`, t)
   }
 

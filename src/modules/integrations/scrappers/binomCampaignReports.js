@@ -1,4 +1,4 @@
-import { getAllMappedSites, getOrCreateSiteId } from '#libs/site.js'
+import { getOrCreateSiteId } from '#libs/site.js'
 import binomAccount from '#entities/binom/account/index.js'
 import binomCampaign from '#entities/binom/campaign/index.js'
 import
@@ -39,8 +39,6 @@ async function fetchReportsFromCampaign(campaign, account) {
     skip: 0,
   }
 
-  const sitesMap = await getAllMappedSites()
-
   let domain
   for await (const report of client.getCampaignReports(campaign, params)) {
     if (report.level === '1') {
@@ -51,7 +49,7 @@ async function fetchReportsFromCampaign(campaign, account) {
     if (!domain || domain.toLowerCase() === 'unknown')
       continue
 
-    const siteId = await getOrCreateSiteId({ domain, sitesMap })
+    const siteId = await getOrCreateSiteId({ domain })
 
     await binomCampaignReport.insertOne({
       binom_campaign_id: campaign.binom_campaign_id,
