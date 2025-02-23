@@ -36,7 +36,6 @@ services:
 
 networks:
   postgres:
-    driver: bridge
 
 volumes:
   postgres:
