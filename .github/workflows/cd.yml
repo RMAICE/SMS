@@ -42,6 +42,7 @@ jobs:
           echo 'JWT_SECRET=${{ secrets.DEMO_JWT_SECRET }}' >> .env_file
           echo 'APP_PORT=${{ vars.APP_PORT }}' >> .env_file
           cat .env_file
+          ls -l
 
       - name: Deploy
         uses: kitconcept/docker-stack-deploy@v1.0.1
