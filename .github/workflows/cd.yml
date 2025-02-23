@@ -33,7 +33,7 @@ jobs:
         with:
           remote_host: ${{ secrets.HOST }}
           ssh_private_key: ${{ secrets.PRIVATE_KEY }}
-          args: compose run sqitch deploy --verify
+          args: compose run sqitch
   # push_to_registry:
   #   runs-on: ubuntu-latest
   #   steps:
