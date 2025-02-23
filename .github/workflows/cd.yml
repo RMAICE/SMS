@@ -43,6 +43,7 @@ jobs:
           echo 'APP_PORT=${{ vars.APP_PORT }}' >> .env_file
           cat .env_file
           ls -la
+          pwd
 
       - name: Deploy
         uses: kitconcept/docker-stack-deploy@v1.0.1
