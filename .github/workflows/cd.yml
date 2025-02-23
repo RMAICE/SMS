@@ -40,6 +40,7 @@ jobs:
           echo 'TELEGRAM_BOT_TOKEN=${{ secrets.DEMO_TELEGRAM_BOT_TOKEN }}' >> .env
           echo 'TELEGRAM_BOT_NAME=${{ secrets.DEMO_TELEGRAM_BOT_NAME }}' >> .env
           echo 'JWT_SECRET=${{ secrets.DEMO_JWT_SECRET }}' >> .env
+          echo 'APP_PORT=${{ vars.APP_PORT }}' >> .env
           cat .env
 
       - name: Deploy
