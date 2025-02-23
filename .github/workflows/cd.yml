@@ -30,20 +30,18 @@ jobs:
 
       - name: Create env file
         run: |
-          touch .env_file
-          echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}' >> .env_file
-          echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}' >> .env_file
-          echo 'GOOGLE_REDIRECT_URI=${{ vars.GOOGLE_REDIRECT_URI }}' >> .env_file
-          echo 'POSTGRES_PASSWORD=${{ secrets.POSTGRES_USER }}' >> .env_file
-          echo 'POSTGRES_USER=${{ secrets.POSTGRES_USER }}' >> .env_file
-          echo 'DB_CONNECTION=${{ vars.DB_CONNECTION }}' >> .env_file
-          echo 'TELEGRAM_BOT_TOKEN=${{ secrets.DEMO_TELEGRAM_BOT_TOKEN }}' >> .env_file
-          echo 'TELEGRAM_BOT_NAME=${{ secrets.DEMO_TELEGRAM_BOT_NAME }}' >> .env_file
-          echo 'JWT_SECRET=${{ secrets.DEMO_JWT_SECRET }}' >> .env_file
-          echo 'APP_PORT=${{ vars.APP_PORT }}' >> .env_file
-          cat .env_file
-          ls -la
-          pwd
+          touch .env
+          echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}' >> .env
+          echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}' >> .env
+          echo 'GOOGLE_REDIRECT_URI=${{ vars.GOOGLE_REDIRECT_URI }}' >> .env
+          echo 'POSTGRES_PASSWORD=${{ secrets.POSTGRES_USER }}' >> .env
+          echo 'POSTGRES_USER=${{ secrets.POSTGRES_USER }}' >> .env
+          echo 'DB_CONNECTION=${{ vars.DB_CONNECTION }}' >> .env
+          echo 'TELEGRAM_BOT_TOKEN=${{ secrets.DEMO_TELEGRAM_BOT_TOKEN }}' >> .env
+          echo 'TELEGRAM_BOT_NAME=${{ secrets.DEMO_TELEGRAM_BOT_NAME }}' >> .env
+          echo 'JWT_SECRET=${{ secrets.DEMO_JWT_SECRET }}' >> .env
+          echo 'APP_PORT=${{ vars.APP_PORT }}' >> .env
+          cat .env
 
       - name: Deploy
         uses: kitconcept/docker-stack-deploy@v1.0.1
@@ -59,3 +57,5 @@ jobs:
           stack_name: demo
           env_file: .env_file
           debug: 1
+        env:
+        APP_PORT: vars.APP_PORT
