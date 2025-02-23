@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   app:
     image: katleta/test-web-app:latest
@@ -36,6 +35,7 @@ services:
 
 networks:
   postgres:
+    driver: overlay
 
 volumes:
   postgres:
