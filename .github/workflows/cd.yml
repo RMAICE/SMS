@@ -30,7 +30,9 @@ jobs:
 
       - name: DB migration
         run: | 
-          docker run sqitch/sqitch log
+          docker pull sqitch/sqitch
+          curl -L https://git.io/JJKCn -o sqitch && chmod +x sqitch
+          ./sqitch log
 
       # - name: Create env file
       #   run: |
