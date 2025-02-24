@@ -32,23 +32,6 @@ services:
     networks:
       - postgres
 
-  sqitch:
-    image: sqitch/sqitch:v1.5.0.0
-    command: deploy --verify --target db:pg://db/
-    volumes:
-      - ./sqitch.conf:/repo/sqitch.conf
-      - ./migrations/:/repo/migrations
-    restart: on-failure:1
-    networks:
-      - postgres
-    depends_on:
-      - db
-    env_file:
-      - .env.production.local
-    environment:
-      SQITCH_PASSWORD: ${POSTGRES_PASSWORD}
-      SQITCH_USERNAME: ${POSTGRES_USER}
-
 networks:
   postgres:
     driver: overlay
