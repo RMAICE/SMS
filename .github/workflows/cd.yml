@@ -28,6 +28,10 @@ jobs:
       - name: Checkout codebase
         uses: actions/checkout@v2
 
+      - name: DB migration
+        run: | 
+          docker run sqitch/sqitch
+
       - name: Create env file
         run: |
           touch .env
