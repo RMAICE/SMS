@@ -24,6 +24,7 @@ const app = new Koa()
 const router = new Router()
 
 console.log(process.env.NODE_ENV)
+console.log(process.env.POSTGRES_USER)
 
 /**
  * @this {Koa.Context}
