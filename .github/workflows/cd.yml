@@ -32,7 +32,9 @@ jobs:
         run: | 
           docker pull sqitch/sqitch
           curl -L https://git.io/JJKCn -o sqitch && chmod +x sqitch
-          ./sqitch log
+          SQITCH_USERNAME=${{ secrets.POSTGRES_USER }} \
+          SQITCH_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
+          ./sqitch deploy --verify --target db:pg://${{ secrets.HOST }}/
 
       # - name: Create env file
       #   run: |
@@ -40,7 +42,7 @@ jobs:
       #     echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}' >> .env
       #     echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}' >> .env
       #     echo 'GOOGLE_REDIRECT_URI=${{ vars.GOOGLE_REDIRECT_URI }}' >> .env
-      #     echo 'POSTGRES_PASSWORD=${{ secrets.POSTGRES_USER }}' >> .env
+      #     echo 'POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}' >> .env
       #     echo 'POSTGRES_USER=${{ secrets.POSTGRES_USER }}' >> .env
       #     echo 'DB_CONNECTION=${{ vars.DB_CONNECTION }}' >> .env
       #     echo 'TELEGRAM_BOT_TOKEN=${{ secrets.DEMO_TELEGRAM_BOT_TOKEN }}' >> .env
