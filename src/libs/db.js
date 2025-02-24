@@ -2,12 +2,14 @@
 import dotenv from 'dotenv/config'
 import pg from 'pg'
 
-if (!process.env.DB_CONNECTION)
+if (!process.env.POSTGRES_USER || !process.env.POSTGRES_PASSWORD)
   throw new Error('No connection provided')
 
 const { Pool } = pg
 const pool = new Pool({
-  connectionString: process.env.DB_CONNECTION,
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  host: 'db',
 })
 
 class Db {
