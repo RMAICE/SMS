@@ -10,8 +10,10 @@
   "scripts": {
     "test": "jest",
     "start": "node index.js",
+    "start:scrappers": "node ./src/scrappers.js",
     "dev": "node --inspect --watch index.js",
-    "dev:docker": "node --inspect=0.0.0.0 --watch index.js"
+    "dev:docker": "node --inspect=0.0.0.0 index.js"
+    "dev:scrappers": "node --inspect=0.0.0.0 ./src/scrappers.js"
   },
   "author": "",
   "license": "ISC",
@@ -41,7 +43,9 @@
   "dependencies": {
     "@koa/router": "13.0.0",
     "@ladjs/koa-views": "^9.0.0",
+    "@types/amqplib": "^0.10.6",
     "@types/pg": "^8.11.11",
+    "amqplib": "^0.10.5",
     "dotenv": "16.4.5",
     "googleapis": "143.0.0",
     "jsonwebtoken": "^9.0.2",

@@ -9,8 +9,24 @@ services:
       - .env
     networks:
       - postgres
+      - rabbit
     depends_on:
       - db
+      - rabbit
+
+  scrappers:
+    image: katleta/test-web-app:latest
+    command: npm run scrappers
+    env_file:
+      - .env
+    networks:
+      - postgres
+      - rabbit
+    depends_on:
+      db:
+        condition: service_started
+      rabbit:
+        condition: service_healthy
 
   db:
     image: postgres
@@ -23,6 +39,21 @@ services:
     networks:
       - postgres
 
+  rabbit:
+    image: rabbitmq:3.13.7-management-alpine
+    hostname: scrappers
+    healthcheck:
+        test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+        interval: 1s
+        retries: 15
+    env_file: 
+      - .env
+    ports:
+      - "8888:15672"
+    networks:
+      - rabbit
+      - postgres
+
   adminer:
     image: adminer
     restart: always
@@ -33,6 +64,8 @@ services:
 
 networks:
   postgres:
+    driver: overlay
+  rabbit:
     driver: overlay
 
 volumes:

@@ -28,6 +28,8 @@ declare global {
       JWT_SECRET: string | undefined
       APP_HOSTNAME: string | undefined
       APP_PORT: string | undefined
+      RABBITMQ_DEFAULT_USER: string | undefined
+      RABBITMQ_DEFAULT_PASS: string | undefined
     }
   }
 }
