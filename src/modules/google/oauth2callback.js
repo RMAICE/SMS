@@ -1,3 +1,4 @@
+import outbox from '#entities/outbox/index.js'
 import { getOrCreateSiteId } from '#libs/site.js'
 import { isObject } from '#libs/util.js'
 import googleAccount from '../../entities/google/account/index.js'
@@ -64,6 +65,8 @@ export async function googleOauthCallback(url) {
         site_id: siteId,
       }, trx)
     }
+
+    await outbox.insertOne(JSON.stringify({ google_account_id: accountData.google_account_id }))
 
     await trx.commit()
   }

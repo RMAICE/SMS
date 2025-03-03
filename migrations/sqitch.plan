@@ -3,3 +3,4 @@
 
 appschema 2025-02-13T21:14:50Z Roman Mikhaelian <romanmihail@MacBook-Air.local> # Initial db state
 init-state [appschema] 2025-02-17T18:55:50Z Roman Mikhaelian <romanmihail@MacBook-Air.local> # Initial db tables
+outbox-table [appschema] 2025-03-03T19:03:57Z Roman Mikhaelian <romanmihail@MacBook-Air.local> # Table to implement outbox pattern

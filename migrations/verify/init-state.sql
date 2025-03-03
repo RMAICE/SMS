@@ -9,14 +9,14 @@ select
   username,
   telegram_id,
   photo_url
-from sms.profile
+from profile
 where false;
 
 select
   site_id,
   profile_id,
   url
-from sms.site
+from site
 where false;
 
 select 
@@ -28,7 +28,7 @@ select
   id_token,
   expiry_date,
   scope
-from sms.google_account
+from google_account
 where false;
 
 select
@@ -36,7 +36,7 @@ select
   permissions,
   google_account_id,
   site_id
-from sms.google_site
+from google_site
 where false;
 
 select
@@ -46,7 +46,7 @@ select
   position,
   date,
   site_id
-from sms.google_site_report
+from google_site_report
 where false;
 
 select
@@ -55,14 +55,14 @@ select
   name,
   host,
   protocol
-from sms.binom_account
+from binom_account
 where false;
 
 select
   binom_campaign_id,
   binom_account_id,
   name
-from sms.binom_campaign
+from binom_campaign
 where false;
 
 select
@@ -71,7 +71,7 @@ select
   date,
   clicks,
   site_id
-from sms.binom_campaign_report
+from binom_campaign_report
 where false;
 
 ROLLBACK;

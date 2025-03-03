@@ -12,7 +12,7 @@
     "start": "node index.js",
     "start:scrappers": "node ./src/scrappers.js",
     "dev": "node --inspect --watch index.js",
-    "dev:docker": "node --inspect=0.0.0.0 index.js"
+    "dev:docker": "node --inspect=0.0.0.0 index.js",
     "dev:scrappers": "node --inspect=0.0.0.0 ./src/scrappers.js"
   },
   "author": "",

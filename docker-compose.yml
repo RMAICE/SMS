@@ -16,7 +16,7 @@ services:
 
   scrappers:
     image: katleta/test-web-app:latest
-    command: npm run scrappers
+    command: npm run start:scrappers
     env_file:
       - .env
     networks:
