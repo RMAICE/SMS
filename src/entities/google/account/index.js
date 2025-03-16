@@ -1,7 +1,7 @@
 import { SQL } from 'sql-template-strings'
 import db from '../../../libs/db.js'
 
-class Account {
+class GoogleAccount {
   /**
      * @param {T.GoogleAccount['google_account_id']} id
      * @param {T.Transaction} [transaction]
@@ -49,4 +49,4 @@ class Account {
   }
 }
 
-export default new Account()
+export default new GoogleAccount()

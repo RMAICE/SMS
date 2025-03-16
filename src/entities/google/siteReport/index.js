@@ -1,7 +1,7 @@
 import { SQL } from 'sql-template-strings'
 import db from '../../../libs/db.js'
 
-class Sites {
+class GoogleSiteReport {
   /**
      * @param {T.Transaction} [t]
      * @returns {Promise<T.GoogleAnalyticsRow[]>}
@@ -47,4 +47,4 @@ class Sites {
   }
 }
 
-export default new Sites()
+export default new GoogleSiteReport()

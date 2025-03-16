@@ -20,7 +20,7 @@ class WorkerQueue {
   }
 
   /**
-   * @param {(message: import('amqplib').Message | null) => Promise<void> | void} fn
+   * @param {(message: import('amqplib').Message) => Promise<void> | void} fn
    */
   async consumeMessage(fn) {
     if (!fn) throw new Error('Function is not provided')
@@ -30,7 +30,9 @@ class WorkerQueue {
     await this.channel?.assertQueue(this.queue, { durable: true })
 
     await this.channel?.consume(this.queue, async (message) => {
-      console.log(`Queue "${this.queue}" has received message ${message?.content.toString()}`)
+      if (!message) return
+
+      console.log(`Queue "${this.queue}" has received message ${message.content.toString()}`)
       await fn(message)
     }, { noAck: true })
 

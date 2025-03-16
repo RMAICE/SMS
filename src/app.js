@@ -16,6 +16,7 @@ import { telegramCallbackHandler } from '#modules/auth/telegramCallback.js'
 import { authenticate } from '#acl/auth.js'
 import { getAuth } from '#modules/auth/index.js'
 import { googleSiteAnalytics } from '#modules/google/sites/analytics.js'
+import './outboxPollingPublisher.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -53,6 +54,7 @@ const render = views(__dirname + '/views', {
 app.use(render)
 app.use((ctx, next) => {
   ctx.state.isLoggedIn = Boolean(ctx.cookies.get('token'))
+  ctx.state.active_link = ctx.path // needed to calculate nav active button
   return next()
 })
 
@@ -81,4 +83,8 @@ app
 const port = process.env.APP_PORT || 9000
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)
+})
+
+process.on('uncaughtException', (e) => {
+  console.error(e)
 })

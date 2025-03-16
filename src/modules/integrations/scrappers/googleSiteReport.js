@@ -3,9 +3,7 @@ import googleSite from '#entities/google/site/index.js'
 import siteReport from '#entities/google/siteReport/index.js'
 import google from '#libs/google.js'
 
-getSitesStats()
-
-async function getSitesStats() {
+export async function getSitesStats() {
   const accounts = await account.getAll()
 
   for (let acc of accounts) {
@@ -18,8 +16,8 @@ async function getSitesStats() {
  * @param {T.GoogleAccount} param.account
  * @returns {Promise<void>}
  */
-async function fetchSitesAnalytics({ account }) {
-  const googleSites = await googleSite.getAllWithSite()
+export async function fetchSitesAnalytics({ account }) {
+  const googleSites = await googleSite.getAllSites()
   const client = google.getWebmastersByAccount(account)
 
   for (let site of googleSites) {
@@ -40,8 +38,8 @@ async function* getSiteReports(client, site) {
     const res = await client.searchanalytics.query({
       siteUrl: site.url,
       requestBody: {
-        startDate: '2024-10-10',
-        endDate: '2024-10-30',
+        startDate: getStartDate(),
+        endDate: getEndDate(),
         dimensions: ['date'],
         rowLimit,
         startRow,
@@ -58,6 +56,24 @@ async function* getSiteReports(client, site) {
 
     if (res.data.rows.length < rowLimit) break
   }
+}
+
+function getStartDate() {
+  const date = new Date()
+  return new Date(Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate() - 90),
+  ).toISOString().substring(0, 10)
+}
+
+function getEndDate() {
+  const date = new Date()
+  return new Date(Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate() - 1),
+  ).toISOString().substring(0, 10)
 }
 
 /**

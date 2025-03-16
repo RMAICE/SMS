@@ -34,6 +34,7 @@ create table if not exists google_account (
 create table if not exists google_site (
   google_site_id serial primary key,
   permissions varchar(50) not null,
+  url text not null unique,
   google_account_id text references google_account,
   site_id integer references site
 );

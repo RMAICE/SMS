@@ -1,6 +1,6 @@
-declare module T {
+declare namespace T {
     type Site = {
-        site_id: number;
-        url: string;
+      site_id: number
+      url: string
     }
 }

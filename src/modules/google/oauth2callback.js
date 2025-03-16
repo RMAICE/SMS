@@ -1,4 +1,4 @@
-import outbox from '#entities/outbox/index.js'
+import GoogleSiteReportWorkerQueue from '#entities/google/siteReport/queue.js'
 import { getOrCreateSiteId } from '#libs/site.js'
 import { isObject } from '#libs/util.js'
 import googleAccount from '../../entities/google/account/index.js'
@@ -14,7 +14,6 @@ export async function googlOauth2CallbackHandler(ctx) {
 
   await ctx.render(ctx.path.substring(1), {
     callbackError: oauthCallbackContext?.callbackError,
-    message: oauthCallbackContext?.message,
   })
 }
 
@@ -62,11 +61,16 @@ export async function googleOauthCallback(url) {
       await googleSite.insertOne({
         permissions: siteItem.permissionLevel,
         google_account_id: accountData.google_account_id,
+        url: siteItem.siteUrl,
         site_id: siteId,
       }, trx)
     }
 
-    await outbox.insertOne(JSON.stringify({ google_account_id: accountData.google_account_id }))
+    if (siteEntry.length) {
+      await GoogleSiteReportWorkerQueue.sendSiteReportOutboxMessage({
+        google_account_id: accountData.google_account_id,
+      }, trx)
+    }
 
     await trx.commit()
   }
@@ -78,13 +82,12 @@ export async function googleOauthCallback(url) {
       return ctx
     }
 
-    if (err.message.includes('UNIQUE constraint failed')) {
+    if (err.message.includes('violates unique constraint')) {
       ctx.callbackError = 'conflict'
       return ctx
     }
 
     ctx.callbackError = 'unknown'
-    ctx.message = err.message
     return ctx
   }
 }
