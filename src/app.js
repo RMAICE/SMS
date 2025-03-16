@@ -62,6 +62,8 @@ router.get('/', authenticate, async (ctx) => {
   await ctx.render(ctx.path.substring(1))
 })
 
+app.use(serve(__dirname + '/views/', { defer: true, maxage: 1000 * 60 * 5, extensions: ['.js'] }))
+
 router.get('/auth', getAuth)
 router.get('/auth/telegram-callback', telegramCallbackHandler)
 

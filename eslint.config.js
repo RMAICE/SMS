@@ -9,10 +9,16 @@ export default tseslint.config(
       globals: {
         ...globals.jest,
         ...globals.node,
+        ...globals.browser,
       },
     },
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   stylistic.configs['recommended-flat'],
+  {
+    rules: {
+      'no-undef': 'off',
+    },
+  },
 )

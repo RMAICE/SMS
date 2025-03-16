@@ -2,8 +2,10 @@ import * as Htmx from 'htmx.org'
 import Koa from 'koa'
 
 declare global {
+  const htmx: typeof Htmx | undefined
+
   interface Window {
-    htmx: Htmx
+    htmx: typeof Htmx | undefined
   }
 
   interface PostCtx<TBody = unknown> extends Koa.Context {
