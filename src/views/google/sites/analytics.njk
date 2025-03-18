@@ -18,8 +18,6 @@
                   </th>
                   <th scope="col"
                       class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 whitespace-nowrap">CLICKS</th>
-                  <th scope="col"
-                      class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 whitespace-nowrap">DATE</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-300">
@@ -29,8 +27,6 @@
                     <td class="whitespace-nowrap py-4 pl-3 text-sm text-gray-500 font-medium">{{ row.position }}</td>
                     <td class="whitespace-nowrap py-4 pl-3 text-sm text-gray-500 font-medium">{{ row.impressions }}</td>
                     <td class="whitespace-nowrap py-4 pl-3 text-sm text-gray-500 font-medium">{{ row.clicks }}</td>
-                    <td id="dateCell"
-                        class="whitespace-nowrap py-4 pl-3 text-sm text-gray-500 font-medium">{{ row.date }}</td>
                   </tr>
                 {% else %}
                   <tr>
@@ -46,6 +42,3 @@
     </div>
   </div>
 {% endblock main %}
-{% block scripts %}
-  <script src="/google/sites/analytics.js"></script>
-{% endblock scripts %}

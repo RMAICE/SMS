@@ -8,12 +8,14 @@ class GoogleSiteReport {
      */
   getAnalytics(t) {
     return db.query(SQL`
-      select 
-        position, impressions, clicks, s.url as url, date
+      select
+        round(avg(position), 2) as position, sum(impressions) as impressions, sum(clicks) as clicks, s.url as url, site_id
       from google_site_report
       left join site s using (site_id)
-      where date between date_trunc('week', current_date) and current_date
-      limit 100`, t)
+      where date between date_trunc('month', current_date) and current_date
+      group by s.url, site_id
+      limit 100
+    `, t)
   }
 
   /**
