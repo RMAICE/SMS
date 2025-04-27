@@ -10,7 +10,9 @@ declare namespace T {
 
     type GoogleAnalyticsRow = {
       url: Site['url']
-    } & Pick<GoogleSiteReport, 'position' | 'impressions' | 'clicks' | 'date'>
+      position_min: number
+      position_max: number
+    } & Pick<GoogleSiteReport, | 'impressions' | 'clicks' | 'date'>
 
     type GoogleSiteReportOutboxMessage = Pick<GoogleAccount, 'google_account_id'>
 }

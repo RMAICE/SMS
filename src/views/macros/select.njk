@@ -1,0 +1,25 @@
+{% macro select(options, id='', outerClass='', selectClass='', hxSwapOob=false, hxGet='', hxTrigger='', hxInclude='', name='') %}
+  <div id="{{ id }}"
+       hx-swap-oob="{{ hxSwapOob }}"
+       class="grid grid-cols-1 {{ outerClass }}">
+    <select hx-get="{{ hxGet }}"
+            hx-trigger="{{ hxTrigger }}"
+            hx-include="{{ hxInclude }}"
+            name="{{ name }}"
+            class="rows-trigger col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pe-8 ps-3 text-gray-900 outline-1 -outline-offset-1 outline-gray-300 text-sm {{ innerClass }}">
+      {% for option in options %}
+        {{ option.selected }}
+        <option value="{{ option.value }}" {{ "selected" if option.selected }}>{{ option.label }}
+        </option>
+      {% endfor %}
+    </select>
+    <svg xmlns="http://www.w3.org/2000/svg"
+         fill="none"
+         viewBox="0 0 24 24"
+         stroke-width="1.5"
+         stroke="currentColor"
+         class="pointer-events-none col-start-1 row-start-1 mr-2 justify-self-end self-center size-4 text-gray-500">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+    </svg>
+  </div>
+{% endmacro %}

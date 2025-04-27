@@ -1,0 +1,71 @@
+{% from "google/sites/analytics/date-shift-buttons.njk" import dateShifter %}
+{% from "google/sites/analytics/date-select.njk" import dateSelect %}
+{% from "macros/select.njk" import select %}
+{% extends "base.njk" %}
+{% block main %}
+  <form hx-get="/google/sites/analytics/rows"
+        hx-trigger="load"
+        hx-target="#table-rows"
+        class="max-w-7xl mx-auto px-8 flex">
+    {{ select(options=[
+        {value: 'month', selected: viewType === 'month', label: 'Месяц'},
+        {value: 'week', selected: viewType === 'week', label: 'Неделя'}
+        {value: 'custom', selected: viewType === 'custom', label: 'Custom'}
+        ],
+        id="view-type",
+        outerClass="ms-auto me-4",
+        name="viewType",
+        hxGet="/google/sites/analytics/rows",
+        hxTrigger="change",
+        hxInclude=".rows-trigger") 
+    }}
+    {{ dateSelect(viewType, years, weeks, months) }}
+  </form>
+  <div class="max-w-7xl mx-auto">
+    <div class="px-8">
+      <div class="flow-root mt-8">
+        <div class="-mx-8 -my-2">
+          <div class="relative inline-block min-w-full py-2 align-middle px-8">
+            <table class="min-w-full divide-gray-300 divide-y">
+              <thead>
+                <tr>
+                  <th scope="col"
+                      class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 whitespace-nowrap">URL</th>
+                  <th scope="col"
+                      class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 whitespace-nowrap">
+                    POSITION MIN
+                  </th>
+                  <th scope="col"
+                      class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 whitespace-nowrap">
+                    POSITION MAX
+                  </th>
+                  <th scope="col"
+                      class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 whitespace-nowrap">
+                    IMPRESSIONS
+                  </th>
+                  <th scope="col"
+                      class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 whitespace-nowrap">CLICKS</th>
+                </tr>
+              </thead>
+              <tbody id="table-rows" class="divide-y divide-gray-300">
+              </tbody>
+              <tbody id="table-loader"
+                     class="hidden divide-y divide-gray-300 [&.htmx-request]:table-row-group">
+                {% for n in 5 %}
+                  <tr>
+                    <td class="h2 rounded bg-gray-200"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock main %}

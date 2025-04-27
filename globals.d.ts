@@ -39,5 +39,7 @@ declare global {
 declare module 'koa' {
   interface BaseContext {
     hxRedirect: (endpoint: string) => void
+    hxPushUrl: (endpoint: string) => void
+    hxReplaceUrl: (endpoint: string) => void
   }
 }

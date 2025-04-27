@@ -15,7 +15,7 @@ import { accountAddGet } from '#modules/binom/modals/account-add.get.js'
 import { telegramCallbackHandler } from '#modules/auth/telegramCallback.js'
 import { authenticate } from '#acl/auth.js'
 import { getAuth } from '#modules/auth/index.js'
-import { googleSiteAnalytics } from '#modules/google/sites/analytics.js'
+import { googleSiteAnalytics, rows } from '#modules/google/sites/analytics.js'
 import './outboxPollingPublisher.js'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -32,7 +32,25 @@ function hxRedirect(endpoint) {
   this.append('HX-Redirect', endpoint)
 }
 
+/**
+ * @this {Koa.Context}
+ * @param {string} endpoint
+ */
+function hxPushUrl(endpoint) {
+  this.append('HX-Push-Url', endpoint)
+}
+
+/**
+ * @this {Koa.Context}
+ * @param {string} endpoint
+ */
+function hxReplaceUrl(endpoint) {
+  this.append('HX-Replace-Url', endpoint)
+}
+
 app.context.hxRedirect = hxRedirect
+app.context.hxPushUrl = hxPushUrl
+app.context.hxReplaceUrl = hxReplaceUrl
 app.use(bodyParser())
 
 const render = views(__dirname + '/views', {
@@ -59,7 +77,7 @@ app.use((ctx, next) => {
 })
 
 router.get('/', authenticate, async (ctx) => {
-  await ctx.render(ctx.path.substring(1))
+  return ctx.redirect('/google/accounts')
 })
 
 app.use(serve(__dirname + '/views/', { defer: true, maxage: 1000 * 60 * 5, extensions: ['.js'] }))
@@ -72,6 +90,7 @@ router.get('/google/oauth2callback', googlOauth2CallbackHandler)
 router.get('/google/accounts/:google_account_id/pfp', authenticate, profilePicture)
 router.get('/google/sites', authenticate, googleSites)
 router.get('/google/sites/analytics', authenticate, googleSiteAnalytics)
+router.get('/google/sites/analytics/rows', authenticate, rows)
 
 router.get('/binom/accounts', authenticate, binomAccounts)
 router.get('/binom/modals/account-add', authenticate, accountAddGet)

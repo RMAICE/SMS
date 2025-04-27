@@ -3,16 +3,29 @@ import db from '../../../libs/db.js'
 
 class GoogleSiteReport {
   /**
-     * @param {T.Transaction} [t]
-     * @returns {Promise<T.GoogleAnalyticsRow[]>}
-     */
-  getAnalytics(t) {
+   * @param {object} filters
+   * @param {import('luxon').DateTime<true>} filters.startDate
+   * @param {import('luxon').DateTime<true>} filters.endDate
+   * @param {T.Transaction} [t]
+   * @returns {Promise<T.GoogleAnalyticsRow[]>}
+   */
+  getAnalytics({ startDate, endDate }, t) {
     return db.query(SQL`
       select
-        round(avg(position), 2) as position, sum(impressions) as impressions, sum(clicks) as clicks, s.url as url, site_id
-      from google_site_report
-      left join site s using (site_id)
-      where date between date_trunc('month', current_date) and current_date
+        coalesce(min(gsr.position), 0) as position_min,
+        coalesce(max(gsr.position), 0) as position_max,
+        coalesce(sum(gsr.impressions), 0) as impressions,
+        coalesce(sum(gsr.clicks), 0) as clicks,
+        s.url as url,
+        site_id
+      from google_site s
+      left join (
+        select
+          position, impressions, clicks, site_id
+        from google_site_report
+        where date >= ${startDate.toISODate()} and
+          date < ${endDate.toISODate()}
+      ) gsr using (site_id)
       group by s.url, site_id
       limit 100
     `, t)

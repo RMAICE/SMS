@@ -1,7 +1,7 @@
-import globals from 'globals'
-import stylistic from '@stylistic/eslint-plugin'
-import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
+import globals from "globals";
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default tseslint.config(
   {
@@ -15,10 +15,10 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
-  stylistic.configs['recommended-flat'],
   {
     rules: {
-      'no-undef': 'off',
+      "no-undef": "off",
     },
   },
-)
+  eslintPluginPrettierRecommended,
+);

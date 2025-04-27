@@ -1,0 +1,32 @@
+{% macro dateShifter(prevStartDate, prevEndDate, nextStartDate, nextEndDate, attrs) %}
+  <div id="date-shifter" class="flex items-stretch">
+    <button hx-get="/google/sites/analytics/rows?startDate={{ prevStartDate }}&endDate={{ prevEndDate }}&viewType={{ viewType }}"
+            hx-target="#table-rows"
+            hx-indicator="#filters, #table-loader"
+            type="button"
+            class="flex flex-none p-1.5 text-gray-400 shadow-xs bg-white border-s-1 border-y-1 rounded-s-md border-gray-300 hover:bg-gray-50 cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke-width="1.5"
+           stroke="currentColor"
+           class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+      </svg>
+    </button>
+    <button hx-get="/google/sites/analytics/rows?startDate={{ nextStartDate }}&endDate={{ nextEndDate }}&viewType={{ viewType }}"
+            hx-target="#table-rows"
+            hx-indicator="#filters, #table-loader"
+            type="button"
+            class="flex flex-none p-1.5 text-gray-400 shadow-xs bg-white border-e-1 border-y-1 rounded-e-md border-gray-300 hover:bg-gray-50 cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke-width="1.5"
+           stroke="currentColor"
+           class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+      </svg>
+    </button>
+  </div>
+{% endmacro %}

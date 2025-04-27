@@ -1,0 +1,33 @@
+{% from "macros/select.njk" import select %}
+{% macro dateSelect(viewType, years, weeks, months) %}
+  {% if viewType != "custom" %}
+    {{ select(options=years,
+        id="year-select",
+        hxSwapOob="true",
+        outerClass="me-4",
+        name="year",
+        hxGet="/google/sites/analytics/rows",
+        hxTrigger="change",
+        hxInclude=".rows-trigger") }}
+  {% endif %}
+  {% if viewType == "month" %}
+    {{ select(options=months,
+        id="period-select",
+        hxSwapOob="true",
+        outerClass="me-4",
+        name="month",
+        hxGet="/google/sites/analytics/rows",
+        hxTrigger="change",
+        hxInclude=".rows-trigger") }}
+  {% elif viewType == "week" %}
+    {{ select(options=weeks,
+        id="period-select",
+        hxSwapOob="true",
+        outerClass="me-4",
+        name="week",
+        hxGet="/google/sites/analytics/rows",
+        hxTrigger="change",
+        hxInclude=".rows-trigger") }}
+  {% elif viewType == "custom" %}
+  {% endif %}
+{% endmacro %}
