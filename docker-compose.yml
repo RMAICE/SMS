@@ -23,10 +23,10 @@ services:
       - postgres
       - rabbit
     depends_on:
-      db:
-        condition: service_started
-      rabbit:
-        condition: service_healthy
+      - db:
+          condition: service_started
+      - rabbit:
+          condition: service_healthy
 
   db:
     image: postgres
