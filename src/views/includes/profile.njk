@@ -6,5 +6,9 @@
             data-size="medium"
             data-userpic="false"
             data-auth-url="/auth/telegram-callback"></script>
+  {% else %}
+    <img class="rounded-full size-8"
+         alt="profile-picture"
+         src="{{ photo_url if photo_url else '/icons/profile.svg' }}" />
   {% endif %}
 </div>

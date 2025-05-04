@@ -1,5 +1,5 @@
-import { SQL } from 'sql-template-strings'
-import db from '../../../libs/db.js'
+import { SQL } from "sql-template-strings";
+import db from "../../../libs/db.js";
 
 class GoogleSiteReport {
   /**
@@ -10,7 +10,8 @@ class GoogleSiteReport {
    * @returns {Promise<T.GoogleAnalyticsRow[]>}
    */
   getAnalytics({ startDate, endDate }, t) {
-    return db.query(SQL`
+    return db.query(
+      SQL`
       select
         coalesce(min(gsr.position), 0) as position_min,
         coalesce(max(gsr.position), 0) as position_max,
@@ -24,17 +25,19 @@ class GoogleSiteReport {
           position, impressions, clicks, site_id
         from google_site_report
         where date >= ${startDate.toISODate()} and
-          date < ${endDate.toISODate()}
+          date <= ${endDate.toISODate()}
       ) gsr using (site_id)
       group by s.url, site_id
       limit 100
-    `, t)
+    `,
+      t,
+    );
   }
 
   /**
-     * @param {T.GoogleSiteReport[]} reports
-     * @param {T.Transaction} [t]
-     */
+   * @param {T.GoogleSiteReport[]} reports
+   * @param {T.Transaction} [t]
+   */
   async insertMany(reports, t) {
     const query = SQL`
             insert into
@@ -42,24 +45,29 @@ class GoogleSiteReport {
                     google_site_id, clicks, impressions, position, date, site_id
                 )
             values
-        `
+        `;
 
-    const values = reports.map(({
-      google_site_id: i, clicks: c, impressions: im,
-      position: p, date, site_id: sid,
-    }) => {
-      const d = date.toISOString()
-      return `(${i}, ${c}, ${im}, ${p}, '${d}', ${sid})`
-    })
+    const values = reports.map(
+      ({
+        google_site_id: i,
+        clicks: c,
+        impressions: im,
+        position: p,
+        date: d,
+        site_id: sid,
+      }) => {
+        return `(${i}, ${c}, ${im}, ${p}, '${d}', ${sid})`;
+      },
+    );
 
-    query.append(values.join(','))
+    query.append(values.join(","));
     query.append(SQL`on conflict (google_site_id, date)
       do update set clicks=excluded.clicks, impressions=excluded.impressions,
       position=excluded.position
-    `)
+    `);
 
-    await db.run(query, t)
+    await db.run(query, t);
   }
 }
 
-export default new GoogleSiteReport()
+export default new GoogleSiteReport();

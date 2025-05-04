@@ -1,4 +1,3 @@
-{% from "google/sites/analytics/date-shift-buttons.njk" import dateShifter %}
 {% from "google/sites/analytics/date-select.njk" import dateSelect %}
 {% from "macros/select.njk" import select %}
 {% extends "base.njk" %}
@@ -9,7 +8,7 @@
         class="max-w-7xl mx-auto px-8 flex">
     {{ select(options=[
         {value: 'month', selected: viewType === 'month', label: 'Месяц'},
-        {value: 'week', selected: viewType === 'week', label: 'Неделя'}
+        {value: 'week', selected: viewType === 'week', label: 'Неделя'},
         {value: 'custom', selected: viewType === 'custom', label: 'Custom'}
         ],
         id="view-type",
@@ -19,7 +18,7 @@
         hxTrigger="change",
         hxInclude=".rows-trigger") 
     }}
-    {{ dateSelect(viewType, years, weeks, months) }}
+    {{ dateSelect(viewType, years, weeks, months, startDate, endDate) }}
   </form>
   <div class="max-w-7xl mx-auto">
     <div class="px-8">

@@ -1,4 +1,4 @@
-{% macro select(options, id='', outerClass='', selectClass='', hxSwapOob=false, hxGet='', hxTrigger='', hxInclude='', name='') %}
+{% macro select(options, id='', outerClass='', selectClass='', hxSwapOob='', hxGet='', hxTrigger='', hxInclude='', name='') %}
   <div id="{{ id }}"
        hx-swap-oob="{{ hxSwapOob }}"
        class="grid grid-cols-1 {{ outerClass }}">
@@ -8,7 +8,6 @@
             name="{{ name }}"
             class="rows-trigger col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pe-8 ps-3 text-gray-900 outline-1 -outline-offset-1 outline-gray-300 text-sm {{ innerClass }}">
       {% for option in options %}
-        {{ option.selected }}
         <option value="{{ option.value }}" {{ "selected" if option.selected }}>{{ option.label }}
         </option>
       {% endfor %}

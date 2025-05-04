@@ -6,17 +6,22 @@ import { DateTime } from "luxon";
  * @typedef {{value: string; label: string; selected: boolean;}} SelectOption
  */
 
+export const DATE_FORMAT = "yyyy-MM-dd";
+
 /**
  * @param {GetCtx<T.GoogleSiteAnalyticsUrlQuery>} ctx
  */
 export async function googleSiteAnalytics(ctx) {
-  const { viewType, weeks, years, months } = getFiltersFromCtx(ctx);
+  const { viewType, weeks, years, months, startDate, endDate } =
+    getFiltersFromCtx(ctx);
 
   await ctx.render(ctx.URL.pathname.substring(1), {
     viewType,
     weeks,
     years,
     months,
+    startDate: startDate.toFormat(DATE_FORMAT),
+    endDate: endDate.toFormat(DATE_FORMAT),
   });
 }
 
@@ -48,6 +53,12 @@ export async function rows(ctx) {
   } else if (viewType === "month") {
     historyUrl.searchParams.set("month", String(selectedMonth));
     historyUrl.searchParams.delete("week");
+  } else if (viewType === "custom") {
+    historyUrl.searchParams.set("startDate", startDate.toFormat(DATE_FORMAT));
+    historyUrl.searchParams.set("endDate", endDate.toFormat(DATE_FORMAT));
+    historyUrl.searchParams.delete("week");
+    historyUrl.searchParams.delete("month");
+    historyUrl.searchParams.delete("year");
   }
 
   historyUrl.searchParams.set("viewType", viewType);
@@ -63,6 +74,8 @@ export async function rows(ctx) {
     months,
     periodLabel,
     analytics,
+    startDate: startDate.toFormat(DATE_FORMAT),
+    endDate: endDate.toFormat(DATE_FORMAT),
   });
 }
 
@@ -72,7 +85,9 @@ export async function rows(ctx) {
 function getFiltersFromCtx(ctx) {
   const { query } = ctx;
   const viewType =
-    query.viewType === "month" || query.viewType === "week"
+    query.viewType === "month" ||
+    query.viewType === "week" ||
+    query.viewType === "custom"
       ? query.viewType
       : "month";
   const [startDate, endDate] = getDates(query, viewType);
@@ -98,9 +113,13 @@ function getFiltersFromCtx(ctx) {
 
 /**
  * @param {GetCtx<T.GoogleSiteAnalyticsUrlQuery>['query']} query
- * @param {'month' | 'week'} viewType
+ * @param {'month' | 'week' | 'custom'} viewType
+ * @returns {[DateTime<true>, DateTime<true>]}
  */
 function getDates(query, viewType) {
+  if (viewType === "custom") return getCustomDates(query);
+
+  /** @type {[DateTime<true>, DateTime<true>]} */
   const defaultRange = [
     DateTime.now().startOf(viewType),
     DateTime.now().endOf(viewType),
@@ -136,6 +155,30 @@ function getDates(query, viewType) {
     .equals(start);
 
   return isEndValid && isStartValid ? [start, end] : defaultRange;
+}
+
+/**
+ * @param {GetCtx<T.GoogleSiteAnalyticsUrlQuery>['query']} query
+ * @returns {[DateTime<true>, DateTime<true>]}
+ */
+function getCustomDates(query) {
+  const now = DateTime.now();
+  let selectedStartDate = DateTime.fromFormat(
+    query.startDate ?? "",
+    DATE_FORMAT,
+  );
+  let selectedEndDate = DateTime.fromFormat(query.endDate ?? "", DATE_FORMAT);
+
+  if (!selectedStartDate.isValid) selectedStartDate = now;
+  if (!selectedEndDate.isValid) selectedEndDate = now;
+
+  if (selectedStartDate > selectedEndDate)
+    return [selectedEndDate, selectedEndDate];
+
+  if (selectedEndDate < selectedStartDate)
+    return [selectedStartDate, selectedStartDate];
+
+  return [selectedStartDate, selectedEndDate];
 }
 
 /**
