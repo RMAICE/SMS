@@ -8,8 +8,7 @@ services:
     env_file:
       - .env
     networks:
-      - postgres
-      - rabbit
+      - primary
     depends_on:
       - db
       - rabbit
@@ -20,13 +19,12 @@ services:
     env_file:
       - .env
     networks:
-      - postgres
-      - rabbit
+      - primary
     depends_on:
-      - db:
-          condition: service_started
-      - rabbit:
-          condition: service_healthy
+      db:
+        condition: service_started
+      rabbit:
+        condition: service_healthy
 
   db:
     image: postgres
@@ -37,7 +35,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - primary
 
   rabbit:
     image: rabbitmq:3.13.7-management-alpine
@@ -51,14 +49,12 @@ services:
     ports:
       - "8888:15672"
     networks:
-      - rabbit
-      - postgres
+      - primary
 
 networks:
-  postgres:
+  primary:
     driver: overlay
-  rabbit:
-    driver: overlay
+    attachable: true
 
 volumes:
   postgres:
